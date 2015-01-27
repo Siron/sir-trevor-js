@@ -8,7 +8,7 @@ module.exports = function(content, type) {
   // Deferring requiring these to sidestep a circular dependency:
   // Block -> this -> Blocks -> Block
   var Blocks = require('./blocks');
-  var Formatters = require('./formatters');
+  // var Formatters = require('./formatters');
 
   type = utils.classify(type);
 
