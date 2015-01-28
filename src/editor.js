@@ -31,7 +31,7 @@ Object.assign(Editor.prototype, require('./function-bind'), require('./events'),
 
   bound: ['onFormSubmit', 'hideAllTheThings', 'changeBlockPosition',
     'removeBlockDragOver', 'renderBlock', 'resetBlockControls',
-    'blockLimitReached'], 
+    'blockLimitReached'],
 
   events: {
     'block:reorder:dragend': 'removeBlockDragOver',
@@ -178,7 +178,7 @@ Object.assign(Editor.prototype, require('./function-bind'), require('./events'),
   },
 
   scrollTo: function(element) {
-    $('html, body').animate({ scrollTop: element.position().top }, 300, "linear");
+    // $('html, body').animate({ scrollTop: element.position().top }, 300, "linear");
   },
 
   removeBlockDragOver: function() {
@@ -294,5 +294,3 @@ Object.assign(Editor.prototype, require('./function-bind'), require('./events'),
 });
 
 module.exports = Editor;
-
-

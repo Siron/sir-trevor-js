@@ -122,6 +122,15 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
   },
 
   render: function() {
+
+    if(this.blockStorage.type==='video') {
+      this.paste_options.html = '<input type="text" placeholder="" class="st-block__paste-input st-paste-block">'
+      this.drop_options.html = '<div class="st-block__dropzone"><span class="st-icon"><%= _.result(block, "icon_name") %></span><p>Paste <span>Video URL</span> here</p></div>';
+    } else {
+      this.paste_options = SirTrevor.DEFAULTS.Block.paste_options;
+      this.drop_options = SirTrevor.DEFAULTS.Block.drop_options;
+    }
+
     this.beforeBlockRender();
     this._setBlockInner();
 
