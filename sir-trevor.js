@@ -1,10 +1,10 @@
 /*!
- * Sir Trevor JS v0.4.4
+ * Sir Trevor JS v0.4.6
  *
  * Released under the MIT license
  * www.opensource.org/licenses/MIT
  *
- * 2015-01-27
+ * 2015-01-28
  */
 
 
@@ -3187,6 +3187,15 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
   },
 
   render: function() {
+
+    if(this.blockStorage.type==='video') {
+      this.paste_options.html = '<input type="text" placeholder="" class="st-block__paste-input st-paste-block">';
+      this.drop_options.html = '<div class="st-block__dropzone"><span class="st-icon"><%= _.result(block, "icon_name") %></span><p>Paste <span>Video URL</span> here</p></div>';
+    } else {
+      this.paste_options = config.defaults.Block.paste_options;
+      this.drop_options = config.defaults.Block.drop_options;
+    }
+
     this.beforeBlockRender();
     this._setBlockInner();
 
@@ -4183,7 +4192,7 @@ Object.assign(Editor.prototype, require('./function-bind'), require('./events'),
 
   bound: ['onFormSubmit', 'hideAllTheThings', 'changeBlockPosition',
     'removeBlockDragOver', 'renderBlock', 'resetBlockControls',
-    'blockLimitReached'], 
+    'blockLimitReached'],
 
   events: {
     'block:reorder:dragend': 'removeBlockDragOver',
@@ -4330,7 +4339,7 @@ Object.assign(Editor.prototype, require('./function-bind'), require('./events'),
   },
 
   scrollTo: function(element) {
-    $('html, body').animate({ scrollTop: element.position().top }, 300, "linear");
+    // $('html, body').animate({ scrollTop: element.position().top }, 300, "linear");
   },
 
   removeBlockDragOver: function() {
@@ -4446,8 +4455,6 @@ Object.assign(Editor.prototype, require('./function-bind'), require('./events'),
 });
 
 module.exports = Editor;
-
-
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./block-controls":56,"./block-manager":58,"./config":79,"./error-handler":81,"./event-bus":82,"./events":83,"./extensions/editor-store":84,"./floating-block-controls":87,"./form-events":88,"./format-bar":89,"./function-bind":92,"./lodash":97,"./utils":103}],81:[function(require,module,exports){
@@ -5755,7 +5762,7 @@ module.exports = function(markdown, type) {
   }
 
   html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/gm,function(match, p1, p2){
-    return "<a href='"+p2+"'>"+p1.replace(/\n/g, '')+"</a>";
+    return "<a target='_blank' rel='nofollow' href='"+p2+"'>"+p1.replace(/\n/g, '')+"</a>";
   });
 
   // This may seem crazy, but because JS doesn't have a look behind,
@@ -5845,9 +5852,9 @@ module.exports = function(content, type) {
   // First of all, strip any additional formatting
   // MSWord, I'm looking at you, punk.
   markdown = markdown.replace(/( class=(")?Mso[a-zA-Z]+(")?)/g, '')
-  .replace(/<!--(.|\s)*?-->/g, '')
-  .replace(/\/\*(.*?)\*\//g, '')
-  .replace(/<(\/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>/gi, '');
+                      .replace(/<!--(.|\s)*?-->/g, '')
+                      .replace(/\/\*(.*?)\*\//g, '')
+                      .replace(/<(\/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>/gi, '');
 
   var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'],
   tagStripper, i;
@@ -5860,12 +5867,12 @@ module.exports = function(content, type) {
   // Escape anything in here that *could* be considered as MD
   // Markdown chars we care about: * [] _ () -
   markdown = markdown.replace(/\*/g, "\\*")
-  .replace(/\[/g, "\\[")
-  .replace(/\]/g, "\\]")
-  .replace(/\_/g, "\\_")
-  .replace(/\(/g, "\\(")
-  .replace(/\)/g, "\\)")
-  .replace(/\-/g, "\\-");
+                      .replace(/\[/g, "\\[")
+                      .replace(/\]/g, "\\]")
+                      .replace(/\_/g, "\\_")
+                      .replace(/\(/g, "\\(")
+                      .replace(/\)/g, "\\)")
+                      .replace(/\-/g, "\\-");
 
   var inlineTags = ["em", "i", "strong", "b"];
 
@@ -5885,24 +5892,24 @@ module.exports = function(content, type) {
   }
 
   markdown = markdown.replace(/<(\w+)(?:\s+\w+="[^"]+(?:"\$[^"]+"[^"]+)?")*>\s*<\/\1>/gim, '') //Empty elements
-  .replace(/\n/mg," ")
-  .replace(/<a.*?href=[""'](.*?)[""'].*?>(.*?)<\/a>/gim, function(match, p1, p2){
-    return "[" + p2.trim().replace(/<(.)?br(.)?>/g, '') + "]("+ p1 +")";
-  }) // Hyperlinks
-  .replace(/<strong>(?:\s*)(.*?)(\s)*?<\/strong>/gim, replaceBolds)
-  .replace(/<b>(?:\s*)(.*?)(\s*)?<\/b>/gim, replaceBolds)
-  .replace(/<em>(?:\s*)(.*?)(\s*)?<\/em>/gim, replaceItalics)
-  .replace(/<i>(?:\s*)(.*?)(\s*)?<\/i>/gim, replaceItalics);
+                      .replace(/\n/mg," ")
+                      .replace(/<a.*?href=[""'](.*?)[""'].*?>(.*?)<\/a>/gim, function(match, p1, p2){
+                        return "[" + p2.trim().replace(/<(.)?br(.)?>/g, '') + "]("+ p1 +")";
+                      }) // Hyperlinks
+                      .replace(/<strong>(?:\s*)(.*?)(\s)*?<\/strong>/gim, replaceBolds)
+                      .replace(/<b>(?:\s*)(.*?)(\s*)?<\/b>/gim, replaceBolds)
+                      .replace(/<em>(?:\s*)(.*?)(\s*)?<\/em>/gim, replaceItalics)
+                      .replace(/<i>(?:\s*)(.*?)(\s*)?<\/i>/gim, replaceItalics);
 
 
   // Do our generic stripping out
   markdown = markdown.replace(/([^<>]+)(<div>)/g,"$1\n$2")                                 // Divitis style line breaks (handle the first line)
-  .replace(/<div><div>/g,'\n<div>')                                         // ^ (double opening divs with one close from Chrome)
-  .replace(/(?:<div>)([^<>]+)(?:<div>)/g,"$1\n")                            // ^ (handle nested divs that start with content)
-  .replace(/(?:<div>)(?:<br>)?([^<>]+)(?:<br>)?(?:<\/div>)/g,"$1\n")        // ^ (handle content inside divs)
-  .replace(/<\/p>/g,"\n\n")                                               // P tags as line breaks
-  .replace(/<(.)?br(.)?>/g,"\n")                                            // Convert normal line breaks
-  .replace(/&lt;/g,"<").replace(/&gt;/g,">");                                 // Encoding
+                      .replace(/<div><div>/g,'\n<div>')                                         // ^ (double opening divs with one close from Chrome)
+                      .replace(/(?:<div>)([^<>]+)(?:<div>)/g,"$1\n")                            // ^ (handle nested divs that start with content)
+                      .replace(/(?:<div>)(?:<br>)?([^<>]+)(?:<br>)?(?:<\/div>)/g,"$1\n")        // ^ (handle content inside divs)
+                      .replace(/<\/p>/g,"\n\n")                                               // P tags as line breaks
+                      .replace(/<(.)?br(.)?>/g,"\n")                                            // Convert normal line breaks
+                      .replace(/&lt;/g,"<").replace(/&gt;/g,">");                                 // Encoding
 
   // Use custom block toMarkdown functions (if any exist)
   var block;

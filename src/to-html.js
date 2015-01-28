@@ -23,7 +23,7 @@ module.exports = function(markdown, type) {
   }
 
   html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/gm,function(match, p1, p2){
-    return "<a href='"+p2+"'>"+p1.replace(/\n/g, '')+"</a>";
+    return "<a target='_blank' rel='nofollow' href='"+p2+"'>"+p1.replace(/\n/g, '')+"</a>";
   });
 
   // This may seem crazy, but because JS doesn't have a look behind,

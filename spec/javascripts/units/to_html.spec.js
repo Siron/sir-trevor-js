@@ -6,7 +6,7 @@ describe("toHTML", function(){
     var markdown = "[test](http://google.com)",
         html = SirTrevor.toHTML(markdown, "Text");
 
-    expect(html).toBe("<div><a href='http://google.com'>test</a></div>");
+    expect(html).toBe("<div><a target='_blank' rel='nofollow' href='http://google.com'>test</a></div>");
   });
 
   it("converts blockquotes to HTML", function(){
@@ -97,7 +97,7 @@ describe("toHTML", function(){
     var md = "[Test\n\n](http://google.com)",
         html = SirTrevor.toHTML(md, "Text");
 
-    expect(html).toBe("<div><a href='http://google.com'>Test</a></div>");
+    expect(html).toBe("<div><a target='_blank' rel='nofollow' href='http://google.com'>Test</a></div>");
   });
 
   it("strips preceding spaces in italic tags", function(){
