@@ -22,10 +22,6 @@ module.exports = function(markdown, type) {
     html = "<div>" + html;
   }
 
-  html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/gm,function(match, p1, p2){
-    return "<a target='_blank' rel='nofollow' href='"+p2+"'>"+p1.replace(/\n/g, '')+"</a>";
-  });
-
   // This may seem crazy, but because JS doesn't have a look behind,
   // we reverse the string to regex out the italic items (and bold)
   // and look for something that doesn't start (or end in the reversed strings case)
@@ -39,6 +35,10 @@ module.exports = function(markdown, type) {
               return ">b/<"+ p1.replace(/\n/g, '').replace(/[\s]+$/,'') +">b<";
            })
           );
+
+  html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/gm,function(match, p1, p2){
+    return "<a target='_blank' rel='nofollow' href='"+p2+"'>"+p1.replace(/\n/g, '')+"</a>";
+  });
 
   html =  html.replace(/^\> (.+)$/mg,"$1");
 
